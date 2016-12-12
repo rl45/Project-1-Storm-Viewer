@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Social
+
 
 class DetailViewController: UIViewController {
 
@@ -17,6 +19,7 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = selectedImage
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
         if let imageToLoad = selectedImage {
             imageView.image  = UIImage(named: imageToLoad)
         }
@@ -33,11 +36,21 @@ class DetailViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.hidesBarsOnTap = false
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    func shareTapped(){
+        if let vc = SLComposeViewController(forServiceType: SLServiceTypeTwitter) {
+            vc.setInitialText("Look at this great picture!")
+            vc.add(imageView.image!)
+            vc.add(URL(string: "http://www.photolib.noaa.gov/nssl"))
+            present(vc, animated: true)
+    }
+
+  
     
 
     /*
@@ -50,4 +63,5 @@ class DetailViewController: UIViewController {
     }
     */
 
+}
 }
